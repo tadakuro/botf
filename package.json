@@ -1,0 +1,13 @@
+{
+  "name": "botforge",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev:bot": "npm run dev --workspace apps/bot",
+    "dev:dashboard": "npm run dev --workspace apps/dashboard",
+    "build": "npm run build --workspaces --if-present"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
