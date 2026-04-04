@@ -1,0 +1,32 @@
+export interface GuildSettings {
+  guildId: string;
+  prefix: string;
+  language: string;
+  modLogChannel?: string;
+  logChannel?: string;
+  welcomeChannel?: string;
+  welcomeMessage?: string;
+  goodbyeChannel?: string;
+  goodbyeMessage?: string;
+  autoRoles: string[];
+  muteRole?: string;
+  jailRole?: string;
+  jailChannel?: string;
+  verificationRole?: string;
+  verificationChannel?: string;
+  ticketCategory?: string;
+  ticketLogChannel?: string;
+  starboardChannel?: string;
+  starboardThreshold: number;
+  levelsEnabled: boolean;
+  levelUpChannel?: string;
+  levelUpMessage?: string;
+  antiNukeEnabled: boolean;
+  antiRaidEnabled: boolean;
+  autoModEnabled: boolean;
+  antiInviteEnabled: boolean;
+  antiSpamEnabled: boolean;
+  antiHoistEnabled: boolean;
+  antiBotEnabled: boolean;
+  suggestionChannel?: string;
+}
