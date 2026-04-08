@@ -1,7 +1,7 @@
 import { requireSession } from '@/lib/session';
 import { connectDB } from '@/lib/db';
-import { WarningModel } from '../../../../../../../packages/database/src/schemas/Warning';
-import { AntiNukeModel } from '../../../../../../../packages/database/src/schemas/AntiNuke';
+import { WarningModel } from '@botforge/database/src/schemas/Warning';
+import { AntiNukeModel } from '@botforge/database/src/schemas/AntiNuke';
 
 export default async function LogsPage({ params }: { params: { guildId: string } }) {
   await requireSession();

@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { connectDB } from '@/lib/db';
-import { GuildModel } from '../../../../../../../packages/database/src/schemas/Guild';
+import { GuildModel } from '@botforge/database/src/schemas/Guild';
 import { getGuildRoles } from '@/lib/discord';
 
-export async function GET(req: NextRequest, { params }: { params: { guildId: string } }) {
+export async function GET(req: NextRequest, { params }: any) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   await connectDB();
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params }: { params: { guildId: str
   return NextResponse.json({ settings: settings ?? {}, roles });
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { guildId: string } }) {
+export async function PATCH(req: NextRequest, { params }: any) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const body = await req.json();

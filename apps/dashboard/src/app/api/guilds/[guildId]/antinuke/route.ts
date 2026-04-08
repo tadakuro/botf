@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { connectDB } from '@/lib/db';
-import { AntiNukeModel } from '../../../../../../../packages/database/src/schemas/AntiNuke';
+import { AntiNukeModel } from '@botforge/database/src/schemas/AntiNuke';
 
-export async function GET(req: NextRequest, { params }: { params: { guildId: string } }) {
+export async function GET(req: NextRequest, { params }: any) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   await connectDB();
@@ -11,7 +11,7 @@ export async function GET(req: NextRequest, { params }: { params: { guildId: str
   return NextResponse.json({ config: config ?? {} });
 }
 
-export async function PATCH(req: NextRequest, { params }: { params: { guildId: string } }) {
+export async function PATCH(req: NextRequest, { params }: any) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const body = await req.json();

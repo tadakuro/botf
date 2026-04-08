@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { connectDB } from '@/lib/db';
-import { CommandPermissionModel } from '../../../../../../../packages/database/src/schemas/CommandPermission';
+import { CommandPermissionModel } from '@botforge/database/src/schemas/CommandPermission';
 import { getGuildRoles } from '@/lib/discord';
 
-export async function GET(req: NextRequest, { params }: { params: { guildId: string } }) {
+export async function GET(req: NextRequest, { params }: { guildId: string }) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   await connectDB();
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest, { params }: { params: { guildId: str
   return NextResponse.json({ permissions, roles });
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { guildId: string } }) {
+export async function PUT(req: NextRequest, { params }: { guildId: string }) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const { target, targetType, enabled, allowedRoles, deniedRoles } = await req.json();

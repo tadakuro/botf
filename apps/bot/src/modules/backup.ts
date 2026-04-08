@@ -1,12 +1,13 @@
 import { BotClient } from '../client';
-import { BackupModel } from '../../../packages/database/src/schemas/Backup';
+import { BackupModel } from '@botforge/database';
 import { loadBackup } from '../services/backupService';
 import { logger } from '../utils/logger';
 
 export function startBackupRestoreLoop(client: BotClient): void {
   setInterval(async () => {
     try {
-      const pending = await BackupModel.find({ 'pendingRestore.requestedAt': { $exists: true } }).limit(5);
+      const Model = BackupModel as any;
+      const pending = await Model.find({ 'pendingRestore.requestedAt': { $exists: true } }).limit(5).exec();
       for (const backup of pending) {
         const pr = (backup as any).pendingRestore;
         if (!pr) continue;
@@ -31,7 +32,7 @@ export function startBackupRestoreLoop(client: BotClient): void {
           logger.error('[Backup] Restore failed:', err);
         }
 
-        await BackupModel.findByIdAndUpdate(backup._id, { $unset: { pendingRestore: 1 } });
+        await Model.findByIdAndUpdate(backup._id, { $unset: { pendingRestore: 1 } }).exec();
       }
     } catch (err) {
       logger.error('[Backup] Loop error:', err);

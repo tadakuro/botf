@@ -4,12 +4,12 @@ import { AuditLogEvent } from 'discord.js';
 
 const event: Event<'guildUpdate'> = {
   name: 'guildUpdate',
-  async execute(client, entity) {
-    if (!('guild' in entity) || !entity.guild) return;
+  async execute(client, oldGuild: any, newGuild: any) {
+    if (!newGuild) return;
     try {
-      const logs = await entity.guild.fetchAuditLogs({ limit: 1 });
+      const logs = await newGuild.fetchAuditLogs({ limit: 1 });
       const entry = logs.entries.first();
-      if (entry) await handleAntiNuke(client, entity.guild, entry);
+      if (entry) await handleAntiNuke(client, newGuild, entry);
     } catch {}
   },
 };

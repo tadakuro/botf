@@ -1,6 +1,6 @@
 import { requireSession } from '@/lib/session';
 import { connectDB } from '@/lib/db';
-import { AntiNukeModel } from '../../../../../../../packages/database/src/schemas/AntiNuke';
+import { AntiNukeModel } from '@botforge/database/src/schemas/AntiNuke';
 import { getGuildRoles } from '@/lib/discord';
 import { AntiNukeForm } from '@/components/dashboard/AntiNukeForm';
 

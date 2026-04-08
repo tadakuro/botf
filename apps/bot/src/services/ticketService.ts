@@ -3,6 +3,7 @@ import { BotClient } from '../client';
 import { GuildModel, TicketModel } from './cacheService';
 import { baseEmbed } from '../utils/embeds';
 import { logger } from '../utils/logger';
+import type { ITicket, IGuild } from '@botforge/database';
 
 export class TicketService {
   constructor(private client: BotClient) {}
@@ -20,7 +21,7 @@ export class TicketService {
         ],
       });
 
-      await TicketModel.create({ guildId: guild.id, channelId: channel.id, userId });
+      await (TicketModel as any).create({ guildId: guild.id, channelId: channel.id, userId });
 
       const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder().setCustomId('tickets:close').setLabel('Close Ticket').setStyle(ButtonStyle.Danger),
@@ -41,7 +42,7 @@ export class TicketService {
 
   async closeTicket(channel: TextChannel): Promise<void> {
     try {
-      await TicketModel.findOneAndUpdate({ channelId: channel.id }, { $set: { closed: true } });
+      await (TicketModel as any).findOneAndUpdate({ channelId: channel.id }, { $set: { closed: true } });
       await channel.delete('Ticket closed');
     } catch (err) {
       logger.error('TicketService.closeTicket error:', err);

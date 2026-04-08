@@ -3,10 +3,13 @@ import { BotClient } from '../client';
 import { GiveawayModel } from '../services/cacheService';
 import { baseEmbed } from '../utils/embeds';
 import { logger } from '../utils/logger';
+import type { IGiveaway } from '@botforge/database';
 
 export async function endGiveaway(client: BotClient, giveawayId: string): Promise<void> {
   try {
-    const giveaway = await GiveawayModel.findById(giveawayId);
+    const Model = GiveawayModel as any;
+    const giveawayRaw = await Model.findById(giveawayId);
+    const giveaway = giveawayRaw as IGiveaway | null;
     if (!giveaway || giveaway.ended) return;
 
     const guild = client.guilds.cache.get(giveaway.guildId);
@@ -35,7 +38,9 @@ export async function endGiveaway(client: BotClient, giveawayId: string): Promis
       embeds: [baseEmbed(0xffd700).setTitle('🎉 Giveaway Ended').setDescription(`**Prize:** ${giveaway.prize}\n**Winners:** ${winners.map(w => `<@${w}>`).join(', ')}`)],
     });
 
-    await GiveawayModel.findByIdAndUpdate(giveawayId, { ended: true });
+    const updateRaw = await Model.findByIdAndUpdate(giveawayId, { ended: true });
+    // We don't need the result, just wait for the update to complete
+    await updateRaw;
   } catch (err) {
     logger.error('endGiveaway error:', err);
   }

@@ -2,6 +2,7 @@ import { Guild, PermissionFlagsBits } from 'discord.js';
 import { BotClient } from '../client';
 import { AntiNukeModel } from './cacheService';
 import { logger } from '../utils/logger';
+import type { IAntiNuke } from '@botforge/database';
 
 const actionLog = new Map<string, { count: number; timer: NodeJS.Timeout }>();
 
@@ -9,7 +10,8 @@ export class AntiNukeService {
   constructor(private client: BotClient) {}
 
   async processAction(guild: Guild, executorId: string, action: string): Promise<void> {
-    const config = await AntiNukeModel.findOne({ guildId: guild.id });
+    const Model = AntiNukeModel as any;
+    const config = await Model.findOne({ guildId: guild.id });
     if (!config?.enabled) return;
     if (config.whitelist.includes(executorId)) return;
     if (executorId === this.client.user?.id) return;

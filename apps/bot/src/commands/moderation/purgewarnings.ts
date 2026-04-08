@@ -2,6 +2,7 @@ import { SlashCommandBuilder, PermissionFlagsBits, GuildMember } from 'discord.j
 import { Command } from '../../types/Command';
 import { successEmbed, errorEmbed } from '../../utils/embeds';
 import { WarningModel } from '../../services/cacheService';
+import type { IWarning } from '@botforge/database';
 
 const command: Command = {
   data: new SlashCommandBuilder()
@@ -12,7 +13,8 @@ const command: Command = {
   async execute(interaction) {
     const target = interaction.options.getMember('user') as GuildMember;
     if (!target) return interaction.reply({ embeds: [errorEmbed('Member not found.')], ephemeral: true });
-    await WarningModel.deleteMany({ guildId: interaction.guild!.id, userId: target.id });
+    const Model = WarningModel as any;
+    await Model.deleteMany({ guildId: interaction.guild!.id, userId: target.id });
     await interaction.reply({ embeds: [successEmbed(`All warnings cleared for **${target.user.tag}**.`)] });
   },
 };

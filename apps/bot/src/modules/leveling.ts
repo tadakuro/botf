@@ -2,6 +2,7 @@ import { Message, TextChannel } from 'discord.js';
 import { BotClient } from '../client';
 import { GuildModel, LevelModel } from '../services/cacheService';
 import { logger } from '../utils/logger';
+import type { ILevel } from '@botforge/database';
 
 export function xpForLevel(level: number): number {
   return 100 * level * (level + 1);
@@ -14,15 +15,17 @@ export async function handleXp(client: BotClient, message: Message): Promise<voi
     if (!settings?.levelsEnabled) return;
 
     const xpGain = Math.floor(Math.random() * 10) + 15;
-    const doc = await LevelModel.findOneAndUpdate(
+    const Model = LevelModel as any;
+    const doc = await Model.findOneAndUpdate(
       { guildId: message.guild.id, userId: message.author.id },
       { $inc: { xp: xpGain } },
       { upsert: true, new: true },
     );
 
+    if (!doc) return;
     const required = xpForLevel(doc.level);
     if (doc.xp >= required) {
-      await LevelModel.updateOne(
+      await (LevelModel as any).updateOne(
         { guildId: message.guild.id, userId: message.author.id },
         { $inc: { level: 1 }, $set: { xp: 0 } },
       );

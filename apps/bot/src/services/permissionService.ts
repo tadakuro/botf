@@ -1,5 +1,5 @@
 import { GuildMember, PermissionResolvable } from 'discord.js';
-import { canUseCommand } from '../../../packages/database/src/repositories/commandPermissionRepository';
+import { canUseCommand } from '@botforge/database';
 
 export async function checkCommandPermission(
   guildId: string,

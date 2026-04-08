@@ -1,6 +1,6 @@
 import { requireSession } from '@/lib/session';
 import { connectDB } from '@/lib/db';
-import { GuildModel } from '../../../../../../../packages/database/src/schemas/Guild';
+import { GuildModel } from '@botforge/database/src/schemas/Guild';
 import { AutoModForm } from '@/components/dashboard/AutoModForm';
 
 export default async function AutoModPage({ params }: { params: { guildId: string } }) {

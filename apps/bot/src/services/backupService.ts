@@ -22,7 +22,7 @@ import {
   IBackupBan,
   IBackupServerSettings,
   IBackupBotforgeSettings,
-} from '../../../packages/database/src/schemas/Backup';
+} from '@botforge/database';
 import { GuildModel } from './cacheService';
 import { logger } from '../utils/logger';
 
@@ -151,7 +151,7 @@ export async function captureBackup(
     logger.warn('[Backup] Could not fetch bans (missing BAN_MEMBERS permission)');
   }
 
-  const backup = await BackupModel.create({
+  const backup = await (BackupModel as any).create({
     guildId: guild.id,
     guildName: guild.name,
     createdBy,
@@ -194,7 +194,7 @@ export async function loadBackup(
   backupId: string,
   options: LoadOptions,
 ): Promise<LoadResult> {
-  const backup = await BackupModel.findById(backupId) as IBackup | null;
+  const backup = await (BackupModel as any).findById(backupId) as IBackup | null;
   if (!backup) throw new Error('Backup not found.');
   if (backup.guildId !== guild.id) throw new Error('This backup does not belong to this server.');
 
@@ -244,7 +244,7 @@ export async function loadBackup(
 
   // Channels
   if (options.restoreChannels) {
-    for (const [, ch] of guild.channels.cache.filter(c => c.deletable)) {
+    for (const [, ch] of guild.channels.cache.filter(c => 'delete' in c && typeof c.delete === 'function')) {
       await ch.delete('Backup restore').catch(() => {});
     }
 

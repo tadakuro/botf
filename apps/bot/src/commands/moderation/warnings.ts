@@ -2,6 +2,7 @@ import { SlashCommandBuilder, PermissionFlagsBits, GuildMember } from 'discord.j
 import { Command } from '../../types/Command';
 import { baseEmbed, errorEmbed } from '../../utils/embeds';
 import { WarningModel } from '../../services/cacheService';
+import type { IWarning } from '@botforge/database';
 
 const command: Command = {
   data: new SlashCommandBuilder()
@@ -12,7 +13,8 @@ const command: Command = {
   async execute(interaction) {
     const target = interaction.options.getMember('user') as GuildMember;
     if (!target) return interaction.reply({ embeds: [errorEmbed('Member not found.')], ephemeral: true });
-    const warnings = await WarningModel.find({ guildId: interaction.guild!.id, userId: target.id }).sort({ createdAt: -1 });
+    const Model = WarningModel as any;
+    const warnings = await Model.find({ guildId: interaction.guild!.id, userId: target.id }).sort({ createdAt: -1 }).exec();
     const embed = baseEmbed(0xf39c12).setTitle(`Warnings for ${target.user.tag}`);
     if (!warnings.length) {
       embed.setDescription('No warnings found.');

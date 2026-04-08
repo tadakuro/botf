@@ -15,12 +15,10 @@
     "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noEmitOnError": false
   },
   "include": [
-    "src/**/*",
-    "../../packages/database/src/**/*",
-    "../../packages/shared-types/src/**/*",
-    "../../packages/config/src/**/*"
+    "src/**/*"
   ]
 }

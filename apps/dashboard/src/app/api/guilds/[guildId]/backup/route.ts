@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { connectDB } from '@/lib/db';
-import { BackupModel } from '../../../../../../../packages/database/src/schemas/Backup';
+import { BackupModel } from '@botforge/database/src/schemas/Backup';
 
-export async function GET(req: NextRequest, { params }: { params: { guildId: string } }) {
+export async function GET(req: NextRequest, { params }: any) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   await connectDB();
@@ -14,7 +14,7 @@ export async function GET(req: NextRequest, { params }: { params: { guildId: str
   return NextResponse.json({ backups });
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { guildId: string } }) {
+export async function DELETE(req: NextRequest, { params }: any) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   const { backupId } = await req.json();

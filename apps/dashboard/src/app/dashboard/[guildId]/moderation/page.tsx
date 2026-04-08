@@ -1,6 +1,6 @@
 import { requireSession } from '@/lib/session';
 import { connectDB } from '@/lib/db';
-import { GuildModel } from '../../../../../../../packages/database/src/schemas/Guild';
+import { GuildModel } from '@botforge/database/src/schemas/Guild';
 import { getGuildRoles, getGuildChannels } from '@/lib/discord';
 import { ModerationSettingsForm } from '@/components/dashboard/ModerationSettingsForm';
 

@@ -1,6 +1,6 @@
 import { requireSession } from '@/lib/session';
 import { connectDB } from '@/lib/db';
-import { BackupModel } from '../../../../../../../packages/database/src/schemas/Backup';
+import { BackupModel } from '@botforge/database/src/schemas/Backup';
 import { BackupPanel } from '@/components/dashboard/BackupPanel';
 
 export default async function BackupPage({ params }: { params: { guildId: string } }) {

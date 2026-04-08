@@ -4,6 +4,7 @@ import { GuildModel } from '../services/cacheService';
 import { WarningModel } from '../services/cacheService';
 import { baseEmbed } from '../utils/embeds';
 import { logger } from '../utils/logger';
+import type { IWarning } from '@botforge/database';
 
 export async function logModAction(
   client: BotClient,
@@ -24,7 +25,11 @@ export async function logModAction(
     const embed = baseEmbed(0xe74c3c)
       .setTitle(`🔨 ${action}`)
       .addFields(
-        { name: 'Target', value: `<@${'id' in target ? target.id : target.id}> (${'tag' in target ? target.tag : target.id})`, inline: true },
+        {
+          name: 'Target',
+          value: `<@${target.id}> (${'tag' in target ? target.tag : ((target as { user: { tag: string } })?.user?.tag || 'Unknown')})`,
+          inline: true
+        },
         { name: 'Moderator', value: `<@${moderator.id}> (${moderator.user.tag})`, inline: true },
         { name: 'Reason', value: reason },
       );
@@ -47,6 +52,6 @@ export async function addWarning(
   moderatorId: string,
   reason: string,
 ): Promise<number> {
-  await WarningModel.create({ guildId, userId, moderatorId, reason });
-  return WarningModel.countDocuments({ guildId, userId });
+  await (WarningModel as any).create({ guildId, userId, moderatorId, reason });
+  return await (WarningModel as any).countDocuments({ guildId, userId });
 }

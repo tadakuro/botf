@@ -6,18 +6,22 @@ export async function addWarning(
   moderatorId: string,
   reason: string,
 ): Promise<IWarning> {
-  const doc = await WarningModel.create({ guildId, userId, moderatorId, reason });
+  const Model = WarningModel as any;
+  const doc = await Model.create({ guildId, userId, moderatorId, reason });
   return doc as IWarning;
 }
 
 export async function getWarnings(guildId: string, userId: string): Promise<IWarning[]> {
-  return WarningModel.find({ guildId, userId }).sort({ createdAt: -1 }).exec();
+  const Model = WarningModel as any;
+  return (await Model.find({ guildId, userId }).sort({ createdAt: -1 }).exec()) as IWarning[];
 }
 
 export async function countWarnings(guildId: string, userId: string): Promise<number> {
-  return WarningModel.countDocuments({ guildId, userId }).exec();
+  const Model = WarningModel as any;
+  return (await Model.countDocuments({ guildId, userId }).exec()) as number;
 }
 
 export async function clearWarnings(guildId: string, userId: string): Promise<void> {
-  await WarningModel.deleteMany({ guildId, userId }).exec();
+  const Model = WarningModel as any;
+  await Model.deleteMany({ guildId, userId }).exec();
 }

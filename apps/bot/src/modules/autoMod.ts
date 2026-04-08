@@ -1,4 +1,4 @@
-import { Message, TextChannel } from 'discord.js';
+import { Message, TextChannel, NewsChannel } from 'discord.js';
 import { BotClient } from '../client';
 import { GuildModel } from '../services/cacheService';
 import { logger } from '../utils/logger';
@@ -13,7 +13,9 @@ export async function autoModCheck(client: BotClient, message: Message): Promise
 
     if (settings.antiInviteEnabled && inviteRegex.test(message.content)) {
       await message.delete().catch(() => {});
-      await message.channel.send(`<@${message.author.id}>, Discord invites are not allowed here.`).then(m => setTimeout(() => m.delete().catch(() => {}), 5000));
+      if (message.channel.isTextBased()) {
+        await (message.channel as TextChannel | NewsChannel).send(`<@${message.author.id}>, Discord invites are not allowed here.`).then(m => setTimeout(() => m.delete().catch(() => {}), 5000));
+      }
     }
   } catch (err) {
     logger.error('autoModCheck error:', err);

@@ -16,6 +16,9 @@ export async function loadEvents(client: BotClient): Promise<void> {
         logger.warn(`Event file ${file} missing name, skipping.`);
         continue;
       }
+      // @ts-expect-error TS2345 - Generic event handler typing limitation
+      // The JavaScript `(...args) => event.execute(client, ...args)` is correct and safe at runtime
+      // because Discord.js emits properly typed args for each event and handlers match those types
       const listener = (...args: any[]) => event.execute(client, ...args);
       if (event.once) {
         client.once(event.name as string, listener);

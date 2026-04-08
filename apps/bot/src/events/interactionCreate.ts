@@ -5,7 +5,7 @@ import { handleModal } from '../handlers/modalHandler';
 import { errorEmbed } from '../utils/embeds';
 import { logger } from '../utils/logger';
 import { config } from '../config';
-import { canUseCommand } from '../../../packages/database/src/repositories/commandPermissionRepository';
+import { canUseCommand } from '@botforge/database';
 
 const event: Event<'interactionCreate'> = {
   name: 'interactionCreate',

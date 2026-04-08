@@ -66,4 +66,4 @@ const GuildSchema = new Schema<IGuild>({
   suggestionChannel: String,
 });
 
-export const GuildModel = mongoose.models.Guild || model<IGuild>('Guild', GuildSchema);
+export const GuildModel = (mongoose.models.Guild as any) ?? model<IGuild>('Guild', GuildSchema);

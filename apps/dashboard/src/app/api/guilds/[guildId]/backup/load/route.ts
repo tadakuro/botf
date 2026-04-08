@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/session';
 import { connectDB } from '@/lib/db';
-import { BackupModel } from '../../../../../../../../packages/database/src/schemas/Backup';
-import { GuildModel } from '../../../../../../../../packages/database/src/schemas/Guild';
+import { BackupModel } from '@botforge/database/src/schemas/Backup';
+import { GuildModel } from '@botforge/database/src/schemas/Guild';
 
-export async function POST(req: NextRequest, { params }: { params: { guildId: string } }) {
+export async function POST(req: NextRequest, { params }: any) {
   const session = await getSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 

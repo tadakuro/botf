@@ -1,7 +1,8 @@
-import { Message } from 'discord.js';
+import { Message, TextBasedChannel } from 'discord.js';
 import { BotClient } from '../client';
 import { GuildModel } from './cacheService';
 import { logger } from '../utils/logger';
+import type { IGuild } from '@botforge/database';
 
 const INVITE_REGEX = /(discord\.gg|discord\.com\/invite|discordapp\.com\/invite)\/[a-zA-Z0-9-]+/i;
 const SPAM_LINKS = /bit\.ly|tinyurl\.com|grabify\.link/i;
@@ -17,13 +18,17 @@ export class AutoModService {
 
       if (settings.antiInviteEnabled && INVITE_REGEX.test(message.content)) {
         await message.delete().catch(() => {});
-        await message.channel.send(`<@${message.author.id}>, Discord invites are not allowed.`).then(m => setTimeout(() => m.delete().catch(() => {}), 5000));
+        if (message.channel.isTextBased() && !message.channel.isDMBased()) {
+          await message.channel.send(`<@${message.author.id}>, Discord invites are not allowed.`).then(m => setTimeout(() => m.delete().catch(() => {}), 5000));
+        }
         return true;
       }
 
       if (SPAM_LINKS.test(message.content)) {
         await message.delete().catch(() => {});
-        await message.channel.send(`<@${message.author.id}>, suspicious links are not allowed.`).then(m => setTimeout(() => m.delete().catch(() => {}), 5000));
+        if (message.channel.isTextBased() && !message.channel.isDMBased()) {
+          await message.channel.send(`<@${message.author.id}>, suspicious links are not allowed.`).then(m => setTimeout(() => m.delete().catch(() => {}), 5000));
+        }
         return true;
       }
     } catch (err) {

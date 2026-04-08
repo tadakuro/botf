@@ -1,8 +1,8 @@
 import { requireSession } from '@/lib/session';
 import { connectDB } from '@/lib/db';
-import { GuildModel } from '../../../../../../packages/database/src/schemas/Guild';
-import { WarningModel } from '../../../../../../packages/database/src/schemas/Warning';
-import { BackupModel } from '../../../../../../packages/database/src/schemas/Backup';
+import { GuildModel } from '@botforge/database/src/schemas/Guild';
+import { WarningModel } from '@botforge/database/src/schemas/Warning';
+import { BackupModel } from '@botforge/database/src/schemas/Backup';
 import { StatCard } from '@/components/dashboard/StatCard';
 
 export default async function GuildOverviewPage({ params }: { params: { guildId: string } }) {

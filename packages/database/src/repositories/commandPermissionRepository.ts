@@ -4,11 +4,13 @@ export async function getPermission(
   guildId: string,
   target: string,
 ): Promise<ICommandPermission | null> {
-  return CommandPermissionModel.findOne({ guildId, target }).exec();
+  const Model = CommandPermissionModel as any;
+  return (await Model.findOne({ guildId, target }).exec()) as ICommandPermission | null;
 }
 
 export async function getAllPermissions(guildId: string): Promise<ICommandPermission[]> {
-  return CommandPermissionModel.find({ guildId }).exec();
+  const Model = CommandPermissionModel as any;
+  return (await Model.find({ guildId }).exec()) as ICommandPermission[];
 }
 
 export async function upsertPermission(
@@ -17,7 +19,8 @@ export async function upsertPermission(
   targetType: 'category' | 'command',
   data: Partial<ICommandPermission>,
 ): Promise<ICommandPermission> {
-  const doc = await CommandPermissionModel.findOneAndUpdate(
+  const Model = CommandPermissionModel as any;
+  const doc = await Model.findOneAndUpdate(
     { guildId, target },
     { $set: { ...data, targetType } },
     { upsert: true, new: true },
@@ -31,7 +34,8 @@ export async function canUseCommand(
   category: string,
   memberRoleIds: string[],
 ): Promise<{ allowed: boolean; reason?: string }> {
-  const cmdPerm = await CommandPermissionModel.findOne({
+  const Model = CommandPermissionModel as any;
+  const cmdPerm = await Model.findOne({
     guildId,
     target: commandName,
     targetType: 'command',
@@ -52,7 +56,7 @@ export async function canUseCommand(
     }
   }
 
-  const catPerm = await CommandPermissionModel.findOne({
+  const catPerm = await Model.findOne({
     guildId,
     target: category,
     targetType: 'category',
